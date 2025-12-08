@@ -1,6 +1,5 @@
 <?php
 
-//namespace IsmailCollective\Html;
 namespace SSLCollective;
 
 use BadMethodCallException;

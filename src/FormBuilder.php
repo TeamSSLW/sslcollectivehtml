@@ -7,13 +7,12 @@ use DateTime;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Arr;
 class FormBuilder
 {
     use Macroable, Componentable {
@@ -24,7 +23,7 @@ class FormBuilder
     /**
      * The HTML builder instance.
      *
-     * @var \Collective\Html\HtmlBuilder
+     * @var \SSLCollective\HtmlBuilder
      */
     protected $html;
 
@@ -99,7 +98,6 @@ class FormBuilder
      */
     protected $skipValueTypes = ['file', 'password', 'checkbox', 'radio'];
 
-
     /**
      * Input Type.
      *
@@ -110,7 +108,7 @@ class FormBuilder
     /**
      * Create a new form builder instance.
      *
-     * @param  \Collective\Html\HtmlBuilder               $html
+     * @param  \SSLCollective\HtmlBuilder               $html
      * @param  \Illuminate\Contracts\Routing\UrlGenerator $url
      * @param  \Illuminate\Contracts\View\Factory         $view
      * @param  string                                     $csrfToken

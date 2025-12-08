@@ -2,27 +2,26 @@
 
 namespace SSLCollective;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Support\Facades\Blade;
 
 class HtmlServiceProvider extends ServiceProvider
 {
     /**
-     * Supported Blade Directives
+     * The available form directives.
      *
      * @var array
      */
-    protected $directives = ['entities','decode','script','style','image','favicon','link','secureLink','linkAsset','linkSecureAsset','linkRoute','linkAction','mailto','email','ol','ul','dl','meta','tag','open','model','close','token','label','input','text','password','hidden','email','tel','number','date','datetime','datetimeLocal','time','url','file','textarea','select','selectRange','selectYear','selectMonth','getSelectOption','checkbox','radio','reset','image','color','submit','button','old'
+    protected $directives = [
+        'entities', 'decode', 'script', 'style', 'image', 'favicon', 'link', 'secureLink',
+        'linkAsset', 'linkSecureAsset', 'linkRoute', 'linkAction', 'mailto', 'email', 'ol',
+        'ul', 'dl', 'meta', 'tag', 'open', 'model', 'close', 'token', 'label', 'input', 'text',
+        'password', 'hidden', 'email', 'tel', 'number', 'date', 'datetime', 'datetimeLocal', 'time',
+        'url', 'file', 'textarea', 'select', 'selectRange', 'selectYear', 'selectMonth',
+        'getSelectOption', 'checkbox', 'radio', 'reset', 'image', 'color', 'submit', 'button', 'old'
     ];
-
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Register the service provider.
@@ -32,13 +31,7 @@ class HtmlServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerHtmlBuilder();
-
         $this->registerFormBuilder();
-
-        $this->app->alias('html', HtmlBuilder::class);
-        $this->app->alias('form', FormBuilder::class);
-
-        $this->registerBladeDirectives();
     }
 
     /**
@@ -61,10 +54,25 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerFormBuilder()
     {
         $this->app->singleton('form', function ($app) {
-            $form = new FormBuilder($app['html'], $app['url'], $app['view'], $app['session.store']->token(), $app['request']);
+            $form = new FormBuilder(
+                $app['html'],
+                $app['url'],
+                $app['view'],
+                $app['session.store']->token()
+            );
 
             return $form->setSessionStore($app['session.store']);
         });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerBladeDirectives();
     }
 
     /**
@@ -74,7 +82,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerBladeDirectives()
     {
-        $this->app->afterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
+        $this->callAfterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
             $namespaces = [
                 'Html' => get_class_methods(HtmlBuilder::class),
                 'Form' => get_class_methods(FormBuilder::class),
@@ -93,15 +101,5 @@ class HtmlServiceProvider extends ServiceProvider
                 }
             }
         });
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['html', 'form', HtmlBuilder::class, FormBuilder::class];
     }
 }
