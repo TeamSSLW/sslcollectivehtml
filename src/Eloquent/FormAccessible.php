@@ -6,6 +6,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Illuminate\Support\Str;
 
+
 trait FormAccessible
 {
 
