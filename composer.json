@@ -2,7 +2,7 @@
   "name": "sslcollective/html",
   "description": "HTML and Form Builders for the Laravel Framework.",
   "license": "MIT",
-  "version": "v1.0.3",
+  "version": "1.0.4",
   "type": "library",
   "authors": [
     {
